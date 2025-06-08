@@ -1,0 +1,144 @@
+/* Center the entire app on screen */
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;               /* enable flexbox */
+  justify-content: center;     /* center horizontally */
+  align-items: center;         /* center vertically */
+  height: 100vh;               /* full viewport height */
+  width: 100vw;                /* full viewport width */
+  background-color: #f5f7fa;  /* optional background color */
+  margin: 0;                  /* remove default margin */
+  padding: 0;                 /* remove default padding */
+}
+
+
+/* The white box containing the todo app */
+.todo-box {
+  background-color: rgb(56, 55, 55);
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90vw;      /* shrink on very small screens */
+  box-shadow: 0 4px 10px rgb(0, 0, 0);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+
+/* Input field styling */
+.todo-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* Add Task button */
+.todo-add-button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.todo-add-button:hover {
+  background-color: #45a049;
+}
+
+/* Filter buttons container */
+.filter-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Individual filter button */
+.filter-button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  background-color: #0b0101;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  
+}
+
+.filter-button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.filter-button:hover:not(.active) {
+  background-color: #ddd;
+}
+
+/* Task list styling */
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 25px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Each task item */
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+/* Task label with checkbox */
+.task-label {
+  flex-grow: 1;
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1rem;
+}
+
+/* Completed tasks have line-through */
+.task-label.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Checkbox styling */
+.task-checkbox {
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+/* Delete button */
+.delete-button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #cc0000;
+  padding: 0 6px;
+  transition: color 0.2s ease;
+}
+
+.delete-button:hover {
+  color: #ff4444;
+}
