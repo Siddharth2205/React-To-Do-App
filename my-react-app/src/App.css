@@ -184,3 +184,42 @@ html, body, #root {
   background-color: #333;
   color: #fff;
 }
+.auth-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 2rem;
+  background: #ffffff11;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.auth-input {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+
+.auth-button,
+.toggle-button,
+.logout-button {
+  padding: 0.5rem 1rem;
+  margin: 1rem 0.5rem;
+  background: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-button {
+  float: right;
+}
+
+.header {
+  background: #333;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
