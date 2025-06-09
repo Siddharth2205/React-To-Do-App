@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "homepage": "https://Siddharth2205.github.io/React-To-Do-App",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
-  },
+"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "lint": "eslint .",
+  "preview": "vite preview",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist"
+}
+,
   "dependencies": {
     "date-fns": "^4.1.0",
     "firebase": "^11.9.0",
