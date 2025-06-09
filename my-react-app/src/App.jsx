@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import { auth } from './firebase';
 import {
@@ -8,49 +8,61 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import TodoApp from './TodoApp';
-import { useEffect } from 'react';
 
 function App() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
+  const [error, setError] = useState('');
 
+  // Listen to auth state changes (login/logout)
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user || null);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setError('');
+      setEmail('');
+      setPassword('');
     });
     return () => unsubscribe();
   }, []);
 
   const handleAuth = async () => {
+    setError('');
     try {
       if (isRegistering) {
         await createUserWithEmailAndPassword(auth, email, password);
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }
-    } catch (error) {
-      alert(error.message);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
-  const handleLogout = () => {
-    signOut(auth);
+  const handleLogout = async () => {
+    await signOut(auth);
   };
 
-  if (user) {
-    return (
-      <div>
-        <div className="header">
-          <span>👋 Welcome, {user.email}</span>
-          <button onClick={handleLogout} className="logout-button">Logout</button>
-        </div>
-        <TodoApp user={user} />
-      </div>
-    );
-  }
+  // If logged in, show welcome + TodoApp
+ if (user) {
+  return (
+    <div className="app-container">
+      <header className="header">
+        <span>👋 Welcome, {user.email}</span>
+        <button onClick={handleLogout} className="logout-button">
+          Logout
+        </button>
+      </header>
 
+      <main className="main-content">
+        <TodoApp user={user} />
+      </main>
+    </div>
+  );
+}
+
+  // If not logged in, show auth form
   return (
     <div className="auth-container">
       <h2>{isRegistering ? 'Create an Account' : 'Login'}</h2>
@@ -60,6 +72,7 @@ function App() {
         className="auth-input"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        autoComplete="username"
       />
       <input
         type="password"
@@ -67,13 +80,21 @@ function App() {
         className="auth-input"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        autoComplete={isRegistering ? 'new-password' : 'current-password'}
       />
       <button onClick={handleAuth} className="auth-button">
         {isRegistering ? 'Sign Up' : 'Login'}
       </button>
+      {error && <p className="error-message">{error}</p>}
       <p>
-        {isRegistering ? 'Already have an account?' : "Don't have an account?"}
-        <button onClick={() => setIsRegistering(!isRegistering)} className="toggle-button">
+        {isRegistering ? 'Already have an account?' : "Don't have an account?"}{' '}
+        <button
+          onClick={() => {
+            setIsRegistering(!isRegistering);
+            setError('');
+          }}
+          className="toggle-button"
+        >
           {isRegistering ? 'Login' : 'Sign up'}
         </button>
       </p>
