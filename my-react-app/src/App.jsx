@@ -8,6 +8,7 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import TodoApp from './TodoApp';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -15,14 +16,13 @@ function App() {
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState('');
+  const [authLoading, setAuthLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // Listen to auth state changes (login/logout)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setError('');
-      setEmail('');
-      setPassword('');
+      setAuthLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -44,25 +44,34 @@ function App() {
     await signOut(auth);
   };
 
-  // If logged in, show welcome + TodoApp
- if (user) {
-  return (
-    <div className="app-container">
-      <header className="header">
-        <span>👋 Welcome, {user.email}</span>
-        <button onClick={handleLogout} className="logout-button">
-          Logout
-        </button>
-      </header>
+  // Show loading fallback while checking auth state
+  if (authLoading) {
+    return <div className="auth-container">Loading...</div>;
+  }
 
-      <main className="main-content">
-        <TodoApp user={user} />
-      </main>
-    </div>
-  );
-}
+  // If user is logged in
+  if (user) {
+    return (
+      <div className="app-container">
+        <header className="header">
+          <div className="user-info">👋 Welcome, {user.email}</div>
+          <div className="header-buttons">
+            <button onClick={() => navigate('/dashboard')} className="auth-button">
+              📊 Dashboard
+            </button>
+            <button onClick={handleLogout} className="logout-button">
+              Logout
+            </button>
+          </div>
+        </header>
+        <main className="main-content">
+          <TodoApp user={user} />
+        </main>
+      </div>
+    );
+  }
 
-  // If not logged in, show auth form
+  // If not logged in
   return (
     <div className="auth-container">
       <h2>{isRegistering ? 'Create an Account' : 'Login'}</h2>
